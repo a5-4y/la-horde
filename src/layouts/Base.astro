@@ -1,0 +1,74 @@
+---
+import '../styles/global.css';
+import { club } from '../data/club';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = `${club.name} — ${club.tagline}`,
+  description = club.description,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SportsClub',
+  name: club.name,
+  description: club.description,
+  url: Astro.site?.toString(),
+  email: club.contact.email,
+  sameAs: [club.contact.instagramUrl],
+  sport: 'Powerlifting',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: club.address.street,
+    postalCode: club.address.postal,
+    addressLocality: club.address.city,
+    addressCountry: 'FR',
+  },
+  areaServed: ['Lyon', 'Villeurbanne', 'Métropole de Lyon'],
+};
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="canonical" href={canonical} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content="powerlifting Lyon, powerlifting Villeurbanne, force athlétique Lyon, club powerlifting, FA Lyon, La Horde, squat bench deadlift, FFForce Lyon" />
+    <meta name="theme-color" content="#8b5cf6" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:image" content="/og.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

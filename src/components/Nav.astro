@@ -1,0 +1,172 @@
+---
+import { club } from '../data/club';
+---
+
+<nav class="nav" data-nav>
+  <div class="container nav-inner">
+    <a href="#top" class="brand">
+      <img src="/logo-violet.png" alt="" width="40" height="40" class="brand-logo" />
+      <span>{club.name}</span>
+    </a>
+
+    <button
+      type="button"
+      class="burger"
+      aria-label="Ouvrir le menu"
+      aria-expanded="false"
+      aria-controls="primary-menu"
+      data-burger
+    >
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul id="primary-menu" class="menu" data-menu>
+      <li><a href="#presentation">Le club</a></li>
+      <li><a href="#tarifs">Tarifs</a></li>
+      <li><a href="#machines">Salle</a></li>
+      <li><a href="#bureau">Bureau</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<script>
+  const nav = document.querySelector<HTMLElement>('[data-nav]');
+  const burger = document.querySelector<HTMLButtonElement>('[data-burger]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+
+  const close = () => {
+    nav?.classList.remove('is-open');
+    burger?.setAttribute('aria-expanded', 'false');
+    burger?.setAttribute('aria-label', 'Ouvrir le menu');
+  };
+
+  burger?.addEventListener('click', () => {
+    const open = nav?.classList.toggle('is-open');
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+  });
+
+  menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', close));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') close();
+  });
+</script>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(10, 8, 18, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    position: relative;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--violet-300);
+    letter-spacing: 0.05em;
+  }
+  .brand:hover { color: var(--violet-400); }
+  .brand-logo {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.5));
+  }
+
+  .menu {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .menu a {
+    color: var(--text);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+  }
+  .menu a:hover { color: var(--violet-400); }
+
+  .burger {
+    display: none;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+    transition: border-color 0.2s;
+  }
+  .burger:hover { border-color: var(--violet-500); }
+  .burger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--violet-300);
+    border-radius: 2px;
+    transition: transform 0.25s, opacity 0.2s;
+  }
+
+  @media (max-width: 720px) {
+    .burger { display: inline-flex; }
+
+    .menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      gap: 0;
+      background: rgba(10, 8, 18, 0.98);
+      backdrop-filter: blur(16px);
+      border-bottom: 0 solid var(--border);
+      padding: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease, border-width 0.3s ease;
+    }
+    .is-open .menu {
+      max-height: 80vh;
+      padding: 0.5rem 0;
+      border-bottom-width: 1px;
+    }
+    .menu li {
+      border-top: 1px solid var(--border);
+    }
+    .menu li:first-child { border-top: none; }
+    .menu a {
+      display: block;
+      padding: 1rem 1.5rem;
+      font-size: 1rem;
+    }
+
+    .is-open .burger span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .is-open .burger span:nth-child(2) {
+      opacity: 0;
+    }
+    .is-open .burger span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+  }
+</style>

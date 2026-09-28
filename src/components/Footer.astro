@@ -1,0 +1,28 @@
+---
+import { club } from '../data/club';
+const year = new Date().getFullYear();
+---
+
+<footer>
+  <div class="container footer-inner">
+    <p>&copy; {year} {club.name} — Association loi 1901 · Villeurbanne</p>
+    <p class="tags">Powerlifting · Force Athlétique · Lyon · Villeurbanne · FFForce</p>
+  </div>
+</footer>
+
+<style>
+  footer {
+    padding: 2rem 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+  .tags {
+    margin-top: 0.5rem;
+    color: var(--violet-400);
+    letter-spacing: 0.05em;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+  }
+</style>
